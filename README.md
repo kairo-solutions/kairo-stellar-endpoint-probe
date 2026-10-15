@@ -5,6 +5,8 @@ and a Soroban RPC endpoint are reachable, healthy, and configured for the same
 Stellar network. It makes read-only requests and uses only the Go standard
 library.
 
+[**Read the documentation**](https://kairo-solutions.github.io/stellar-endpoint-probe/)
+
 ## Usage
 
 ```sh

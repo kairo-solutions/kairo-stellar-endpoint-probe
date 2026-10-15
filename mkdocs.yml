@@ -1,0 +1,57 @@
+site_name: Stellar Endpoint Probe
+site_description: Read-only health and network checks for Stellar Horizon and Soroban RPC
+site_author: Kairo Solutions
+site_url: https://kairo-solutions.github.io/stellar-endpoint-probe/
+
+repo_url: https://github.com/kairo-solutions/stellar-endpoint-probe
+repo_name: kairo-solutions/stellar-endpoint-probe
+
+copyright: Copyright &copy; 2026 Kairo Solutions
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.highlight
+    - search.share
+    - search.suggest
+    - content.code.copy
+
+extra_css:
+  - assets/stylesheets/documentation.css
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+nav:
+  - Home: index.md
+  - Guides:
+      - Quick start: guides/quickstart.md
+      - Checks and output: guides/checks.md
+  - Reference:
+      - Go API: reference/api.md
+  - About:
+      - Development: about/development.md
