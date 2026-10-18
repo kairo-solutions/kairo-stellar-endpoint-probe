@@ -34,7 +34,8 @@ the report, allowing callers to display all outcomes in one run.
 
 `Report` contains the requested network, an overall `OK` flag, and ordered
 checks. Each `Check` contains a name, `ok`/`fail`/`skipped` status, sanitized
-endpoint, latency in milliseconds, and an explanatory message.
+endpoint, latency in milliseconds, and an explanatory message. The Soroban RPC
+latest-ledger check also sets `LedgerSequence` on success.
 
 ```go
 report, err := endpointprobe.Probe(ctx, endpointprobe.Config{

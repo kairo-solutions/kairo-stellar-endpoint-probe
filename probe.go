@@ -26,11 +26,12 @@ type Config struct {
 
 // Check is one observable result from an endpoint probe.
 type Check struct {
-	Name      string `json:"name"`
-	Status    string `json:"status"`
-	Endpoint  string `json:"endpoint,omitempty"`
-	LatencyMS int64  `json:"latency_ms,omitempty"`
-	Message   string `json:"message,omitempty"`
+	Name           string `json:"name"`
+	Status         string `json:"status"`
+	Endpoint       string `json:"endpoint,omitempty"`
+	LatencyMS      int64  `json:"latency_ms,omitempty"`
+	LedgerSequence uint32 `json:"ledger_sequence,omitempty"`
+	Message        string `json:"message,omitempty"`
 }
 
 // Report contains the outcome of all requested checks.
@@ -60,11 +61,12 @@ func Probe(ctx context.Context, cfg Config) (Report, error) {
 	client := &http.Client{Timeout: cfg.Timeout}
 	horizon := checkHorizon(ctx, client, cfg.HorizonURL)
 	health := checkRPCHealth(ctx, client, cfg.SorobanRPCURL)
+	latestLedger := checkRPCLatestLedger(ctx, client, cfg.SorobanRPCURL)
 	network := checkRPCNetwork(ctx, client, cfg.SorobanRPCURL)
 
 	report := Report{
 		Network: cfg.Network,
-		Checks:  []Check{horizon.check, health, network.check},
+		Checks:  []Check{horizon.check, health, latestLedger, network.check},
 	}
 
 	if cfg.NetworkPassphrase != "" {
@@ -189,6 +191,43 @@ func checkRPCHealth(ctx context.Context, client *http.Client, endpoint string) C
 		Endpoint:  displayEndpoint(endpoint),
 		LatencyMS: time.Since(started).Milliseconds(),
 		Message:   "getHealth reported healthy",
+	}
+}
+
+func checkRPCLatestLedger(ctx context.Context, client *http.Client, endpoint string) Check {
+	started := time.Now()
+	result, err := callRPC(ctx, client, endpoint, "getLatestLedger")
+	if err != nil {
+		return failedCheck("Soroban RPC latest ledger", endpoint, started, err.Error())
+	}
+
+	var latestLedger struct {
+		Sequence uint32 `json:"sequence"`
+	}
+	if err := json.Unmarshal(result, &latestLedger); err != nil {
+		return failedCheck(
+			"Soroban RPC latest ledger",
+			endpoint,
+			started,
+			"invalid getLatestLedger result: "+err.Error(),
+		)
+	}
+	if latestLedger.Sequence == 0 {
+		return failedCheck(
+			"Soroban RPC latest ledger",
+			endpoint,
+			started,
+			"getLatestLedger result is missing a positive sequence",
+		)
+	}
+
+	return Check{
+		Name:           "Soroban RPC latest ledger",
+		Status:         "ok",
+		Endpoint:       displayEndpoint(endpoint),
+		LatencyMS:      time.Since(started).Milliseconds(),
+		LedgerSequence: latestLedger.Sequence,
+		Message:        fmt.Sprintf("getLatestLedger returned sequence %d", latestLedger.Sequence),
 	}
 }
 

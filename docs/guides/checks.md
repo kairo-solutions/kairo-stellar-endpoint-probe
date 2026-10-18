@@ -6,6 +6,7 @@ The probe performs independent read-only checks:
 | --- | --- | --- |
 | Horizon root | `GET /` | Successful HTTP response with a network passphrase |
 | Soroban RPC health | JSON-RPC `getHealth` | Result reports `status: healthy` |
+| Soroban RPC latest ledger | JSON-RPC `getLatestLedger` | Result includes a positive ledger sequence |
 | Soroban RPC network | JSON-RPC `getNetwork` | Result includes a passphrase |
 | Expected network | Local comparison | Each returned passphrase matches the selected network |
 | Cross-service consistency | Local comparison | Horizon and Soroban RPC passphrases match |
@@ -23,7 +24,9 @@ either service cannot provide a passphrase.
 | `2` | Invalid command-line arguments or configuration |
 
 Use the JSON report's `ok` field for the overall result and inspect individual
-`checks` to identify a failing service. Latency is measured in milliseconds.
+`checks` to identify a failing service. Successful latest-ledger checks include
+the `ledger_sequence` in JSON and the ledger number in the text report. Latency
+is measured in milliseconds.
 Endpoint query strings are omitted from report output.
 
 ## Operational notes

@@ -92,8 +92,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintf(stdout, "%s: %s network\n", status, report.Network)
 		for _, check := range report.Checks {
 			if check.Endpoint != "" {
-				fmt.Fprintf(stdout, "- %-42s %-7s %s (%d ms)\n",
-					check.Name, check.Status, check.Endpoint, check.LatencyMS)
+				fmt.Fprintf(stdout, "- %-42s %-7s %s (%d ms) - %s\n",
+					check.Name, check.Status, check.Endpoint, check.LatencyMS, check.Message)
 			} else {
 				fmt.Fprintf(stdout, "- %-42s %-7s %s\n", check.Name, check.Status, check.Message)
 			}
