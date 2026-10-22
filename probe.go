@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -59,10 +60,29 @@ func Probe(ctx context.Context, cfg Config) (Report, error) {
 	}
 
 	client := &http.Client{Timeout: cfg.Timeout}
-	horizon := checkHorizon(ctx, client, cfg.HorizonURL)
-	health := checkRPCHealth(ctx, client, cfg.SorobanRPCURL)
-	latestLedger := checkRPCLatestLedger(ctx, client, cfg.SorobanRPCURL)
-	network := checkRPCNetwork(ctx, client, cfg.SorobanRPCURL)
+	var horizon endpointResult
+	var health Check
+	var latestLedger Check
+	var network endpointResult
+	var checks sync.WaitGroup
+	checks.Add(4)
+	go func() {
+		defer checks.Done()
+		horizon = checkHorizon(ctx, client, cfg.HorizonURL)
+	}()
+	go func() {
+		defer checks.Done()
+		health = checkRPCHealth(ctx, client, cfg.SorobanRPCURL)
+	}()
+	go func() {
+		defer checks.Done()
+		latestLedger = checkRPCLatestLedger(ctx, client, cfg.SorobanRPCURL)
+	}()
+	go func() {
+		defer checks.Done()
+		network = checkRPCNetwork(ctx, client, cfg.SorobanRPCURL)
+	}()
+	checks.Wait()
 
 	report := Report{
 		Network: cfg.Network,
@@ -299,14 +319,19 @@ func callRPC(ctx context.Context, client *http.Client, endpoint, method string) 
 	}
 
 	var response struct {
-		Result json.RawMessage `json:"result"`
-		Error  *struct {
+		JSONRPC string          `json:"jsonrpc"`
+		ID      int             `json:"id"`
+		Result  json.RawMessage `json:"result"`
+		Error   *struct {
 			Code    int    `json:"code"`
 			Message string `json:"message"`
 		} `json:"error"`
 	}
 	if err := json.NewDecoder(io.LimitReader(resp.Body, maxResponseSize)).Decode(&response); err != nil {
 		return nil, fmt.Errorf("decode %s response: %w", method, err)
+	}
+	if response.JSONRPC != "2.0" || response.ID != 1 {
+		return nil, fmt.Errorf("%s response has an invalid JSON-RPC version or id", method)
 	}
 	if response.Error != nil {
 		return nil, fmt.Errorf("%s RPC error %d: %s", method, response.Error.Code, response.Error.Message)
