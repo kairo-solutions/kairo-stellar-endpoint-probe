@@ -1,0 +1,24 @@
+{
+  "name": "@kairo-solutions/stellar-endpoint-probe-types",
+  "version": "0.1.0",
+  "description": "Typed TypeScript consumer for Stellar Endpoint Probe JSON reports",
+  "type": "module",
+  "types": "./.build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./.build/index.d.ts",
+      "import": "./.build/index.js"
+    }
+  },
+  "files": [
+    ".build"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck:consumer": "tsc --noEmit -p tsconfig.consumer.json",
+    "test": "npm run build && npm run typecheck:consumer && node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

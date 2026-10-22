@@ -22,8 +22,9 @@ go run ./cmd/kairo-stellar-endpoint-probe \
   --network testnet
 ```
 
-The probe checks the Horizon root response, Soroban RPC `getHealth` and
-`getNetwork` methods, and compares both reported network passphrases. Use
+The probe checks the Horizon root response, Soroban RPC `getHealth`,
+`getLatestLedger`, and `getNetwork` methods concurrently, then compares both
+reported network passphrases. Use
 `--network public` for the public network, or `--network custom
 --network-passphrase "..."` for a private network.
 
@@ -31,6 +32,23 @@ Use `--json` for machine-readable output and `--timeout` to set the timeout for
 each request. The command exits with status `0` when all checks pass, `1` when
 an endpoint check fails, and `2` for invalid arguments or configuration.
 Endpoint query parameters are omitted from reports to avoid printing API tokens.
+
+## TypeScript report consumer
+
+The companion TypeScript module validates and types the JSON report for Node
+applications and dashboards:
+
+```ts
+import { parseProbeReport } from "@kairo-solutions/stellar-endpoint-probe-types";
+
+const report = parseProbeReport(jsonFromProbe);
+if (!report.ok) {
+  console.error(report.checks.filter((check) => check.status === "fail"));
+}
+```
+
+Run its checks with `npm ci && npm test` from `typescript/`. This companion is
+source in the repository and is not yet published to npm.
 
 ## Development
 
