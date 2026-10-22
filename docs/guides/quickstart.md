@@ -5,13 +5,13 @@
 With Go 1.21 or newer:
 
 ```sh
-go install github.com/kairo-solutions/stellar-endpoint-probe/cmd/stellar-endpoint-probe@latest
+go install github.com/kairo-solutions/kairo-stellar-endpoint-probe/cmd/kairo-stellar-endpoint-probe@latest
 ```
 
 Or run from a checkout:
 
 ```sh
-go run ./cmd/stellar-endpoint-probe \
+go run ./cmd/kairo-stellar-endpoint-probe \
   --horizon https://horizon-testnet.stellar.org \
   --soroban-rpc https://soroban-testnet.stellar.org
 ```
@@ -21,7 +21,7 @@ go run ./cmd/stellar-endpoint-probe \
 Testnet is the default. Public network checks are explicit:
 
 ```sh
-stellar-endpoint-probe \
+kairo-stellar-endpoint-probe \
   --horizon https://horizon.stellar.org \
   --soroban-rpc https://soroban-rpc.mainnet.stellar.gateway.fm \
   --network public
@@ -30,7 +30,7 @@ stellar-endpoint-probe \
 For a private network, set the expected passphrase:
 
 ```sh
-stellar-endpoint-probe \
+kairo-stellar-endpoint-probe \
   --horizon https://horizon.example.org \
   --soroban-rpc https://rpc.example.org \
   --network custom \
@@ -45,7 +45,7 @@ credential.
 Use `--json` to send a structured report to a script:
 
 ```sh
-stellar-endpoint-probe \
+kairo-stellar-endpoint-probe \
   --horizon https://horizon-testnet.stellar.org \
   --soroban-rpc https://soroban-testnet.stellar.org \
   --json

@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	endpointprobe "github.com/kairo-solutions/stellar-endpoint-probe"
+	endpointprobe "github.com/kairo-solutions/kairo-stellar-endpoint-probe"
 )
 
 const (
@@ -22,7 +22,7 @@ func main() {
 }
 
 func run(args []string, stdout, stderr io.Writer) int {
-	flags := flag.NewFlagSet("stellar-endpoint-probe", flag.ContinueOnError)
+	flags := flag.NewFlagSet("kairo-stellar-endpoint-probe", flag.ContinueOnError)
 	flags.SetOutput(stderr)
 	horizonURL := flags.String("horizon", "", "Horizon base URL (required)")
 	rpcURL := flags.String("soroban-rpc", "", "Soroban RPC base URL (required)")
@@ -33,7 +33,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 	flags.Usage = func() {
 		fmt.Fprintln(stderr, "Probe Horizon and Soroban RPC endpoint health and network identity.")
 		fmt.Fprintln(stderr, "\nUsage:")
-		fmt.Fprintln(stderr, "  stellar-endpoint-probe --horizon URL --soroban-rpc URL [options]")
+		fmt.Fprintln(stderr, "  kairo-stellar-endpoint-probe --horizon URL --soroban-rpc URL [options]")
 		fmt.Fprintln(stderr, "\nOptions:")
 		flags.PrintDefaults()
 	}

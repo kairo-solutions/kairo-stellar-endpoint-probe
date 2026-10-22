@@ -1,10 +1,10 @@
 site_name: Stellar Endpoint Probe
 site_description: Read-only health and network checks for Stellar Horizon and Soroban RPC
 site_author: Kairo Solutions
-site_url: https://kairo-solutions.github.io/stellar-endpoint-probe/
+site_url: https://kairo-solutions.github.io/kairo-stellar-endpoint-probe/
 
-repo_url: https://github.com/kairo-solutions/stellar-endpoint-probe
-repo_name: kairo-solutions/stellar-endpoint-probe
+repo_url: https://github.com/kairo-solutions/kairo-stellar-endpoint-probe
+repo_name: kairo-solutions/kairo-stellar-endpoint-probe
 
 copyright: Copyright &copy; 2026 Kairo Solutions
 

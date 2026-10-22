@@ -24,7 +24,7 @@ connected to the network you expect.
 **A quick look**
 
 ```sh
-go run ./cmd/stellar-endpoint-probe \
+go run ./cmd/kairo-stellar-endpoint-probe \
   --horizon https://horizon-testnet.stellar.org \
   --soroban-rpc https://soroban-testnet.stellar.org \
   --network testnet
@@ -98,7 +98,7 @@ Use the Go package from automation, or run the tests and checks locally.
 ## Install
 
 ```sh
-go install github.com/kairo-solutions/stellar-endpoint-probe/cmd/stellar-endpoint-probe@latest
+go install github.com/kairo-solutions/kairo-stellar-endpoint-probe/cmd/kairo-stellar-endpoint-probe@latest
 ```
 
 The probe is read-only. It does not require keys, sign transactions, or submit

@@ -3,7 +3,7 @@
 Import the package as `endpointprobe`:
 
 ```go
-import endpointprobe "github.com/kairo-solutions/stellar-endpoint-probe"
+import endpointprobe "github.com/kairo-solutions/kairo-stellar-endpoint-probe"
 ```
 
 ## `Config`

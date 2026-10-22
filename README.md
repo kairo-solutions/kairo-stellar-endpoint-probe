@@ -1,16 +1,22 @@
 # Stellar Endpoint Probe
 
-`stellar-endpoint-probe` is a small Go CLI for checking that a Horizon endpoint
+`kairo-stellar-endpoint-probe` is a small Go CLI for checking that a Horizon endpoint
 and a Soroban RPC endpoint are reachable, healthy, and configured for the same
 Stellar network. It makes read-only requests and uses only the Go standard
 library.
 
-[**Read the documentation**](https://kairo-solutions.github.io/stellar-endpoint-probe/)
+[**Read the documentation**](https://kairo-solutions.github.io/kairo-stellar-endpoint-probe/)
+
+Part of the **Kairo Stellar toolkit**:
+
+- [Soroban Event Snapshot](https://github.com/kairo-solutions/kairo-soroban-event-snapshot) exports contract events over a ledger range.
+- [Stellar Transaction Inspector](https://github.com/kairo-solutions/kairo-stellar-tx-inspector) decodes transaction-envelope XDR.
+- **Stellar Endpoint Probe** checks Horizon/Soroban health and network identity.
 
 ## Usage
 
 ```sh
-go run ./cmd/stellar-endpoint-probe \
+go run ./cmd/kairo-stellar-endpoint-probe \
   --horizon https://horizon-testnet.stellar.org \
   --soroban-rpc https://soroban-testnet.stellar.org \
   --network testnet
@@ -30,7 +36,7 @@ Endpoint query parameters are omitted from reports to avoid printing API tokens.
 
 ```sh
 go test ./...
-go run ./cmd/stellar-endpoint-probe --help
+go run ./cmd/kairo-stellar-endpoint-probe --help
 ```
 
 ## Scope
