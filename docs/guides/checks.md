@@ -11,7 +11,8 @@ The probe performs independent read-only checks:
 | Expected network | Local comparison | Each returned passphrase matches the selected network |
 | Cross-service consistency | Local comparison | Horizon and Soroban RPC passphrases match |
 
-The endpoint checks are reported separately, so an unavailable service does not
+The Horizon request and three Soroban RPC requests run concurrently. The
+endpoint checks are reported separately, so an unavailable service does not
 hide the status of the other one. A consistency check is marked `skipped` when
 either service cannot provide a passphrase.
 
@@ -34,6 +35,7 @@ Endpoint query strings are omitted from report output.
 - Endpoints must be absolute HTTP or HTTPS URLs and must not embed user
   credentials.
 - Each request has its own timeout.
+- Soroban RPC replies must use JSON-RPC 2.0 and match the request ID.
 - Use HTTPS for production endpoints.
 - The probe does not treat endpoint reachability as transaction simulation or
   proof of ledger freshness.
